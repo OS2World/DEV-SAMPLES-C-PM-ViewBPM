@@ -1,0 +1,17 @@
+file AppDefs.Obj
+file BmpWnd.Obj
+file Effects.Obj
+file GetBmp.Obj
+file OpenDlg.Obj
+file Support.Obj
+file ViewBmp.Obj
+file ViewDlg.Obj
+name ViewBmp.Exe
+option modname=ViewBmp
+format os2 lx pm
+option description 'Bitmap Viewer'
+segment class 'code' loadoncall executeread noiopl nonconforming
+segment class 'data' loadoncall readwrite noiopl
+option manyautodata
+option stack=16384
+option protmode

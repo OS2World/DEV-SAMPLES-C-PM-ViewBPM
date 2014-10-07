@@ -1,0 +1,905 @@
+
+/* OS/2 2.x Resource Script File - Created by   Prominare Designer */
+
+#define INCL_WINSYS
+#define INCL_WINSTDDLGS
+#define INCL_WINSTDSPIN
+#define INCL_NLS
+#define INCL_SW
+
+#include <os2.h>
+
+#include "viewbmp.h"
+
+ICON        WIN_BITMAPVIEWER BmpView.Ico
+MENU WIN_BITMAPVIEWER
+BEGIN
+
+    SUBMENU "~File",                   IDM_FILE, MIS_TEXT
+    BEGIN
+        MENUITEM "~Open...",           IDM_OPEN, MIS_TEXT
+        MENUITEM "~View system info...", IDM_VIEWSYSTEMINFO, MIS_TEXT
+    END
+
+    SUBMENU "~Scale",                  IDM_SCALE, MIS_TEXT
+    BEGIN
+        MENUITEM "~25 %",              IDM_25PERCENT, MIS_TEXT
+        MENUITEM "~50 %",              IDM_50PERCENT, MIS_TEXT
+        MENUITEM "~75 %",              IDM_75PERCENT, MIS_TEXT
+        MENUITEM "~100 %",             IDM_100PERCENT, MIS_TEXT
+        MENUITEM "2~00 %",             IDM_200PERCENT, MIS_TEXT
+        MENUITEM "~400 %",             IDM_400PERCENT, MIS_TEXT
+        MENUITEM "~800 %",             IDM_800PERCENT, MIS_TEXT
+        MENUITEM SEPARATOR
+        MENUITEM "~Show all",          IDM_SHOWALL, MIS_TEXT
+    END
+
+    SUBMENU "~Effects",                IDM_EFFECTS, MIS_TEXT
+    BEGIN
+        MENUITEM "Flip ~colour table", IDM_FLIPCOLOURTABLE, MIS_TEXT
+    END
+END
+
+MENU IDM_POPUP 850 MOVEABLE DISCARDABLE
+BEGIN
+    MENUITEM "BITMAP~ARRAYFILEHEADER", IDM_BITMAPARRAYFILEHEADER, MIS_TEXT
+    MENUITEM "BITMAP~FILEHEADER",      IDM_BITMAPFILEHEADER, MIS_TEXT
+    MENUITEM "BITMAP~INFOHEADER",      IDM_BITMAPINFOHEADER, MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "~Colour table",          IDM_COLOURTABLE, MIS_TEXT
+END
+
+MENU IDM_POPUPSINGLE 850 MOVEABLE DISCARDABLE
+BEGIN
+    MENUITEM "BITMAP~FILEHEADER",      IDM_BITMAPFILEHEADER, MIS_TEXT
+    MENUITEM "BITMAP~INFOHEADER",      IDM_BITMAPINFOHEADER, MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "~Colour table",          IDM_COLOURTABLE, MIS_TEXT
+END
+
+DLGTEMPLATE DLG_OPENBITMAP 850
+BEGIN
+    DIALOG "Open Bitmap", DLG_OPENBITMAP, 42, 48, 216, 168, FS_NOBYTEALIGN |
+                FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS | WS_VISIBLE,
+                FCF_TITLEBAR | FCF_SYSMENU
+    BEGIN
+        CONTROL "Select bitmap file to open and view.", -1, 5, 154, 205, 10,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "",                    -1, 5, 100, 205, 56, WC_STATIC,
+                                            SS_GROUPBOX | WS_GROUP | WS_VISIBLE
+        CONTROL "Current path:",       -1, 8, 139, 75, 10, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_DIRECTORY, 84, 139, 120, 10,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Volume:",             -1, 8, 127, 75, 10, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_VOLUMELABEL, 84, 127, 120, 10,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Disk remaining:",     -1, 8, 115, 75, 10, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_DISKFREE, 84, 115, 120, 10, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Number of files:",    -1, 8, 103, 75, 10, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_FILECOUNT, 84, 103, 120, 10,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Drives:",             -1, 5, 88, 33, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    CBX_DRIVES, 40, 29, 170, 68, WC_COMBOBOX,
+                                            CBS_DROPDOWNLIST | WS_GROUP |
+                                            WS_VISIBLE
+        CONTROL "Directories",         -1, 5, 77, 100, 8, WC_STATIC, SS_TEXT |
+                                            DT_CENTER | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    LB_DIRECTORIES, 5, 20, 100, 57,
+                                            WC_LISTBOX, LS_HORZSCROLL |
+                                            WS_VISIBLE
+        CONTROL "Files",               -1, 110, 77, 100, 8, WC_STATIC, SS_TEXT |
+                                            DT_CENTER | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    LB_FILES, 110, 20, 100, 57, WC_LISTBOX,
+                                            LS_HORZSCROLL | WS_VISIBLE
+        CONTROL "Open",                DID_OK, 90, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+        CONTROL "Cancel",              DID_CANCEL, 151, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | WS_TABSTOP |
+                                            WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPARRAYFILEHEADER 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View BITMAPARRAYFILEHEADER", DLG_VIEWBITMAPARRAYFILEHEADER, 60, 66, 200, 97,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Bitmap is an OS/2 1.x format.", -1, 5, 85, 186, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "Bitmap image index",  -1, 5, 75, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 75, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_BITMAPINDEX, 100, 75, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "",                    -1, 5, 70, 185, 5, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "USHORT  usType",      -1, 5, 60, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 60, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BFT_BITMAPARRAY",     IT_USTYPE, 100, 60, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cbSize",      -1, 5, 50, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 50, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "40",                  IT_CBSIZE, 100, 50, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  offNext",     -1, 5, 40, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 40, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "88",                  IT_OFFNEXT, 100, 40, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cxDisplay",   -1, 5, 30, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "0",                   IT_CXDISPLAY, 100, 30, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 30, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cyDisplay",   -1, 5, 20, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 20, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CYDISPLAY, 100, 20, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "OK",                  DID_OK, 135, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPFILEHEADER 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View BITMAPFILEHEADER", DLG_VIEWBITMAPFILEHEADER, 60, 66, 200, 97,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Bitmap is an OS/2 1.x format.", -1, 5, 85, 186, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "Bitmap image index",  -1, 5, 75, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 75, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_BITMAPINDEX, 100, 75, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "",                    -1, 5, 70, 185, 5, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "USHORT  usType",      -1, 5, 60, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 60, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BFT_BITMAPARRAY",     IT_USTYPE, 100, 60, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cbSize",      -1, 5, 50, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 50, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "40",                  IT_CBSIZE, 100, 50, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "SHORT   xHotspot",    -1, 5, 40, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 40, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "88",                  IT_XHOTSPOT, 100, 40, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "SHORT   yHotspot",    -1, 5, 30, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "0",                   IT_YHOTSPOT, 100, 30, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 30, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   offBits",     -1, 5, 20, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 20, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_OFFBITS, 100, 20, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "OK",                  DID_OK, 135, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPINFOHEADER 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View BITMAPINFOHEADER", DLG_VIEWBITMAPINFOHEADER, 60, 66, 200, 97,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Bitmap is an OS/2 1.x format.", -1, 5, 85, 186, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "Bitmap image index",  -1, 5, 75, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 75, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_BITMAPINDEX, 100, 75, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "",                    -1, 5, 70, 185, 5, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "ULONG   cbFix",       -1, 5, 60, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 60, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BFT_BITMAPARRAY",     IT_CBFIX, 100, 60, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cx",          -1, 5, 50, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 50, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "40",                  IT_CX, 100, 50, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cy",          -1, 5, 40, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 40, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "88",                  IT_CY, 100, 40, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cPlanes",     -1, 5, 30, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "0",                   IT_CPLANES, 100, 30, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 30, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cBitCount",   -1, 5, 20, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 20, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CBITCOUNT, 100, 20, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "OK",                  DID_OK, 135, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPARRAYFILEHEADER2 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View BITMAPARRAYFILEHEADER", DLG_VIEWBITMAPARRAYFILEHEADER2, 60, 66, 200, 97,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Bitmap is an OS/2 2.x format.", -1, 5, 85, 186, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "Bitmap image index",  -1, 5, 75, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 75, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_BITMAPINDEX, 100, 75, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "",                    -1, 5, 70, 185, 5, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "USHORT  usType",      -1, 5, 60, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 60, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BFT_BITMAPARRAY",     IT_USTYPE, 100, 60, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cbSize",      -1, 5, 50, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 50, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "40",                  IT_CBSIZE, 100, 50, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   offNext",     -1, 5, 40, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 40, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "88",                  IT_OFFNEXT, 100, 40, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cxDisplay",   -1, 5, 30, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "0",                   IT_CXDISPLAY, 100, 30, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 30, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cyDisplay",   -1, 5, 20, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 20, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CYDISPLAY, 100, 20, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "OK",                  DID_OK, 135, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPFILEHEADER2 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View BITMAPFILEHEADER", DLG_VIEWBITMAPFILEHEADER2, 60, 66, 200, 97,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Bitmap is an OS/2 2.x format.", -1, 5, 85, 186, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "Bitmap image index",  -1, 5, 75, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 75, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_BITMAPINDEX, 100, 75, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "",                    -1, 5, 70, 185, 5, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "USHORT  usType",      -1, 5, 60, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 60, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BFT_BITMAPARRAY",     IT_USTYPE, 100, 60, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cbSize",      -1, 5, 50, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 50, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "40",                  IT_CBSIZE, 100, 50, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "SHORT   xHotspot",    -1, 5, 40, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 40, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "88",                  IT_XHOTSPOT, 100, 40, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "SHORT   yHotspot",    -1, 5, 30, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "0",                   IT_YHOTSPOT, 100, 30, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 90, 30, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   offBits",     -1, 5, 20, 78, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 90, 20, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_OFFBITS, 100, 20, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "OK",                  DID_OK, 135, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPINFOHEADER2 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View BITMAPINFOHEADER", DLG_VIEWBITMAPINFOHEADER2, 10, 29, 240, 203,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Bitmap is an OS/2 2.x format.", -1, 5, 191, 186, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "Bitmap image index",  -1, 5, 179, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 130, 179, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_BITMAPINDEX, 141, 179, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "",                    -1, 5, 174, 225, 5, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "ULONG   cbFix",       -1, 5, 164, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 164, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BFT_BITMAPARRAY",     IT_CBFIX, 140, 164, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cx",          -1, 5, 156, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 156, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "40",                  IT_CX, 140, 156, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cy",          -1, 5, 148, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 148, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "88",                  IT_CY, 140, 148, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cPlanes",     -1, 5, 140, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "0",                   IT_CPLANES, 140, 140, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "=",                   -1, 130, 140, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  cBitCount",   -1, 5, 132, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 132, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CBITCOUNT, 140, 132, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   ulCompression", -1, 5, 124, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_GROUP | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 124, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "BCA_UNCOMP",          IT_ULCOMPRESSION, 140, 124, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "ULONG   cbImage",     -1, 5, 116, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 116, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CBIMAGE, 140, 116, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cxResolution", -1, 5, 108, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 108, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CXRESOLUTION, 140, 108, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "ULONG   cyResolution", -1, 5, 100, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 100, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CYRESOLUTION, 140, 100, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "ULONG   cclrUsed",    -1, 5, 92, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 93, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CCLRUSED, 140, 92, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cclrImportant", -1, 5, 84, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 84, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CCLRIMPORTANT, 140, 84, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "USHORT  usUnits",     -1, 5, 76, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 77, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_USUNITS, 140, 76, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  usReserved",  -1, 5, 68, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 68, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_USRESERVED, 140, 68, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "USHORT  usRecording", -1, 5, 60, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 60, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_USRECORDING, 140, 60, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "USHORT  usRendering", -1, 5, 52, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 52, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_USRENDERING, 140, 52, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "ULONG   cSize1",      -1, 5, 44, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 44, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CSIZE1, 140, 44, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   cSize2",      -1, 5, 36, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 36, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_CSIZE2, 140, 36, 90, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+        CONTROL "ULONG   ulColorEncoding", -1, 5, 28, 120, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 28, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_ULCOLORENCODING, 140, 28, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "ULONG   ulIdentifier", -1, 5, 20, 120, 8, WC_STATIC, SS_TEXT |
+                                            DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+                PRESPARAMS PP_FONTNAMESIZE, "8.Courier"
+        CONTROL "=",                   -1, 130, 20, 7, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "0",                   IT_ULIDENTIFIER, 140, 20, 90, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "OK",                  DID_OK, 135, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_GROUP | WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWCOLOURTABLE 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View Colour Table", DLG_VIEWCOLOURTABLE, 170, 30, 131, 192,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Index",               -1, 5, 180, 50, 8, WC_STATIC, SS_TEXT |
+                                            DT_CENTER | DT_VCENTER | WS_GROUP |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "RGB Value",           -1, 60, 180, 50, 8, WC_STATIC, SS_TEXT |
+                                            DT_CENTER | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "RGB[000] =",          IT_INDEX00, 5, 171, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX00, 61, 171, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[001] =",          IT_INDEX01, 5, 160, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX01, 61, 161, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[002] =",          IT_INDEX02, 5, 150, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX02, 61, 151, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[003] =",          IT_INDEX03, 5, 140, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX03, 61, 141, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[004] =",          IT_INDEX04, 5, 131, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX04, 61, 131, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[005] =",          IT_INDEX05, 5, 120, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX05, 61, 121, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[006] =",          IT_INDEX06, 5, 111, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX06, 61, 111, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[007] =",          IT_INDEX07, 5, 100, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX07, 61, 101, 48, 6,
+                                            WC_ENTRYFIELD, ES_AUTOSCROLL |
+                                            ES_MARGIN | ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[008] =",          IT_INDEX08, 5, 91, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX08, 61, 91, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[009] =",          IT_INDEX09, 5, 80, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX09, 61, 81, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[010] =",          IT_INDEX10, 5, 70, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX10, 61, 71, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[011] =",          IT_INDEX11, 5, 60, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX11, 61, 61, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[012] =",          IT_INDEX12, 5, 50, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX12, 61, 51, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[013] =",          IT_INDEX13, 5, 40, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX13, 61, 41, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[014] =",          IT_INDEX14, 5, 30, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX14, 61, 31, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[015] =",          IT_INDEX15, 5, 20, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX15, 61, 21, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "",                    SB_INDEX, 115, 20, 8, 158, WC_SCROLLBAR,
+                                            SBS_VERT | WS_VISIBLE
+                CTLDATA 14, 0, 0, 240, 0, 0, 0
+        CONTROL "OK",                  DID_OK, 65, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEW2COLOURTABLE 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View Colour Table", DLG_VIEW2COLOURTABLE, 170, 30, 116, 55,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Index",               -1, 5, 40, 50, 8, WC_STATIC, SS_TEXT |
+                                            DT_CENTER | DT_VCENTER | WS_GROUP |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "RGB Value",           -1, 60, 40, 50, 8, WC_STATIC, SS_TEXT |
+                                            DT_CENTER | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_DARKRED
+                PRESPARAMS PP_FONTNAMESIZE, "10.Helv"
+        CONTROL "RGB[0] =",            IT_INDEX00, 5, 31, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX00, 61, 32, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "RGB[1] =",            IT_INDEX01, 5, 20, 50, 8, WC_STATIC,
+                                            SS_TEXT | DT_RIGHT | DT_VCENTER |
+                                            WS_VISIBLE
+        CONTROL "0xFFFFFFFF",          EF_INDEX01, 61, 21, 48, 6, WC_ENTRYFIELD,
+                                            ES_AUTOSCROLL | ES_MARGIN |
+                                            ES_AUTOTAB | WS_TABSTOP |
+                                            WS_VISIBLE
+                CTLDATA 8, 10, 0, 0
+        CONTROL "OK",                  DID_OK, 50, 5, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_TABSTOP | WS_VISIBLE
+    END
+END
+
+DLGTEMPLATE DLG_VIEWBITMAPSYSINO 850 MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "View System Bitmap Info", DLG_VIEWBITMAPSYSINO, 24, 53, 111, 158,
+                FS_NOBYTEALIGN | FS_DLGBORDER | WS_CLIPSIBLINGS | WS_SAVEBITS |
+                WS_VISIBLE, FCF_TITLEBAR | FCF_SYSMENU
+    PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL "Screen",              -1, 5, 130, 100, 24, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "Width:",              -1, 8, 140, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_CXSCREEN, 55, 140, 43, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Height:",             -1, 8, 132, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_CYSCREEN, 55, 132, 43, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Resolution",          -1, 5, 100, 100, 25, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "Horizontal:",         -1, 8, 110, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_HORZRESOLUTION, 55, 110, 43, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Vertical:",           -1, 8, 102, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_VERTRESOLUTION, 55, 102, 43, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Colours",             -1, 5, 65, 100, 33, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "Planes:",             -1, 8, 83, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_PLANES, 55, 83, 43, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Distinct:",           -1, 8, 75, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_DISTINCTCOLOURS, 55, 75, 43, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Bitcount:",           -1, 8, 67, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_BITCOUNT, 55, 67, 43, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Bitmap",              -1, 5, 20, 100, 41, WC_STATIC,
+                                            SS_GROUPBOX | WS_VISIBLE
+        CONTROL "Formats:",            -1, 8, 46, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_BITMAPFORMATS, 55, 46, 43, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "BitBlt:",             -1, 8, 38, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_BITBLT, 55, 38, 43, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "Banding:",            -1, 8, 30, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_BANDING, 55, 30, 43, 8, WC_STATIC,
+                                            SS_TEXT | DT_VCENTER | WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "BitBlt scaling:",     -1, 8, 22, 42, 8, WC_STATIC, SS_TEXT |
+                                            DT_RIGHT | DT_VCENTER | WS_VISIBLE
+        CONTROL "",                    IT_BITBLTSCALING, 55, 22, 43, 8,
+                                            WC_STATIC, SS_TEXT | DT_VCENTER |
+                                            WS_VISIBLE
+                PRESPARAMS PP_FOREGROUNDCOLORINDEX, CLR_BLACK
+        CONTROL "OK",                  DID_OK, 44, 6, 60, 12, WC_BUTTON,
+                                            BS_PUSHBUTTON | BS_DEFAULT |
+                                            WS_TABSTOP | WS_VISIBLE
+    END
+END
+
