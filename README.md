@@ -19,4 +19,4 @@ AUTHORS
 
 LINKS
 ===============
-* 
+* https://archive.org/details/os2devmag/OS2DevMag-V7N6/page/n13/mode/2up
