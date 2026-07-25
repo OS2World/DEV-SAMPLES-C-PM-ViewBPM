@@ -1,0 +1,64 @@
+# Makefile.gcc -- Build ViewBmp with GCC 9.2 for OS/2
+#
+# Usage: make -f Makefile.gcc
+#
+# Requires GCC 9.2 (OS/2 port), wl.exe (OpenWatcom linker), wrc (OS/2 RC)
+#
+# EMXOMFLD_* redirect the GCC linker front-end to use wlink, which produces
+# a proper OS/2 LX executable and honours the .def file for bldlevel.
+
+CC      = gcc
+CFLAGS  = -c -Zomf -O2 -Wall -Isrc
+
+SRC     = src
+OUT     = bin-gcc
+
+OBJS    = $(OUT)/appdefs.obj \
+          $(OUT)/bmpwnd.obj  \
+          $(OUT)/effects.obj \
+          $(OUT)/getbmp.obj  \
+          $(OUT)/opendlg.obj \
+          $(OUT)/support.obj \
+          $(OUT)/viewbmp.obj \
+          $(OUT)/viewdlg.obj
+
+TARGET  = $(OUT)/ViewBmp.exe
+
+export EMXOMFLD_TYPE=WLINK
+export EMXOMFLD_LINKER=wl.exe
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS) $(OUT)/viewbmp.res
+	$(CC) -Zomf -Zmap -o $(TARGET) $(OBJS) $(SRC)/viewbmp.def -lpm
+	wrc $(OUT)/viewbmp.res $(TARGET)
+
+$(OUT)/viewbmp.res: $(SRC)/viewbmp.rc $(SRC)/viewbmp.h $(SRC)/bmpview.ico
+	wrc -r -I$(SRC) -fo $(OUT)/viewbmp.res $(SRC)/viewbmp.rc
+
+$(OUT)/appdefs.obj: $(SRC)/appdefs.c $(SRC)/appdefs.h $(SRC)/viewbmp.h $(SRC)/winbmp.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/bmpwnd.obj: $(SRC)/bmpwnd.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/effects.obj: $(SRC)/effects.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/getbmp.obj: $(SRC)/getbmp.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/opendlg.obj: $(SRC)/opendlg.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/support.obj: $(SRC)/support.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/viewbmp.obj: $(SRC)/viewbmp.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(OUT)/viewdlg.obj: $(SRC)/viewdlg.c $(SRC)/appdefs.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+clean:
+	rm -f $(OUT)/*.obj $(OUT)/*.res $(OUT)/*.map $(OUT)/*.exe

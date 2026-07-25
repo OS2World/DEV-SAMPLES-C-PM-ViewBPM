@@ -11,7 +11,7 @@
 
 #include "viewbmp.h"
 
-ICON        WIN_BITMAPVIEWER BmpView.Ico
+ICON        WIN_BITMAPVIEWER bmpview.ico
 MENU WIN_BITMAPVIEWER
 BEGIN
 
@@ -902,4 +902,3 @@ BEGIN
                                             WS_TABSTOP | WS_VISIBLE
     END
 END
-

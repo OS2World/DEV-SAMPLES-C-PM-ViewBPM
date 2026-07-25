@@ -1,0 +1,75 @@
+Build started 
+ 
+=== Compiling === 
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\appdefs.c: 58 lines, included 13911, 0 warnings, 0 errors
+Code size: 0
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\bmpwnd.c: 528 lines, included 13911, 0 warnings, 0 errors
+Code size: 2732
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\effects.c: 116 lines, included 13911, 0 warnings, 0 errors
+Code size: 157
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\getbmp.c: 455 lines, included 13911, 0 warnings, 0 errors
+Code size: 1579
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\opendlg.c: 322 lines, included 13911, 0 warnings, 0 errors
+Code size: 2009
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\support.c: 211 lines, included 13911, 0 warnings, 0 errors
+Code size: 627
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\viewbmp.c: 107 lines, included 13911, 0 warnings, 0 errors
+Code size: 353
+Open Watcom C32 Optimizing Compiler Version 2.0.1
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+src\viewdlg.c: 640 lines, included 13911, 0 warnings, 0 errors
+Code size: 3833
+ 
+=== Resource === 
+Open Watcom Windows and OS/2 Resource Compiler Version 2.0.1
+Portions Copyright (c) 1993-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+ 
+=== Linking === 
+** EXPERIMENTAL (HLL) ** Open Watcom Linker Version 2.0.1
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+loading object files
+searching libraries
+Warning! W1008: cannot open pm.lib : No such file or directory
+creating an OS/2 32-bit Presentation Manager executable
+ 
+=== Adding resources === 
+Open Watcom Windows and OS/2 Resource Compiler Version 2.0.1
+Portions Copyright (c) 1993-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+ 
+Build finished 

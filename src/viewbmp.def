@@ -1,0 +1,13 @@
+
+NAME            ViewBmp WINDOWAPI
+
+DESCRIPTION     '@#OS2World:1.01#@##1## 24 Jul 2026 00:00:00     ARCAOS-507::::::v1.01@@Bitmap Viewer - OS/2 PM sample for viewing and analyzing bitmap files.'
+
+CODE            MOVEABLE
+DATA            MULTIPLE MOVEABLE
+
+STACKSIZE       32768
+
+PROTMODE
+
+EXETYPE         OS2

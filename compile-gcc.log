@@ -1,0 +1,46 @@
+Build started 
+ 
+=== Compiling === 
+src\opendlg.c: In function 'FillDirAndFileList.constprop':
+src\opendlg.c:120:47: warning: '%s' directive output may be truncated writing up to 259 bytes into a region of size 256 [-Wformat-truncation=]
+  120 |     snprintf(szSearch, sizeof(szSearch) - 4, "%s", pszDir);
+      |                                               ^~
+src\opendlg.c:120:5: note: 'snprintf' output between 1 and 260 bytes into a destination of size 256
+  120 |     snprintf(szSearch, sizeof(szSearch) - 4, "%s", pszDir);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src\opendlg.c:139:47: warning: '%s' directive output may be truncated writing up to 259 bytes into a region of size 254 [-Wformat-truncation=]
+  139 |     snprintf(szSearch, sizeof(szSearch) - 6, "%s", pszDir);
+      |                                               ^~
+src\opendlg.c:139:5: note: 'snprintf' output between 1 and 260 bytes into a destination of size 254
+  139 |     snprintf(szSearch, sizeof(szSearch) - 6, "%s", pszDir);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src\opendlg.c: In function 'OpenBitmapDlgProc':
+src\opendlg.c:305:61: warning: '%s' directive output may be truncated writing up to 259 bytes into a region of size between 1 and 260 [-Wformat-truncation=]
+  305 |                         snprintf(szFull, sizeof(szFull), "%s%s", szCurrentDir, szName);
+      |                                                             ^~                 ~~~~~~
+src\opendlg.c:305:25: note: 'snprintf' output between 1 and 519 bytes into a destination of size 260
+  305 |                         snprintf(szFull, sizeof(szFull), "%s%s", szCurrentDir, szName);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src\viewbmp.c:28: warning: ignoring #pragma subsystem  [-Wunknown-pragmas]
+   28 | #pragma subsystem(PM)
+      | 
+ 
+=== Resource === 
+Open Watcom Windows and OS/2 Resource Compiler Version 2.0.1
+Portions Copyright (c) 1993-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+ 
+=== Linking === 
+ 
+=== PM flag === 
+SYS1041: The name rexx is not recognized as an
+internal or external command, operable program or batch file.
+ 
+=== Adding resources === 
+Open Watcom Windows and OS/2 Resource Compiler Version 2.0.1
+Portions Copyright (c) 1993-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+ 
+Build finished 

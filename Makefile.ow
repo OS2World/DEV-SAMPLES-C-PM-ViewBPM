@@ -1,0 +1,74 @@
+# Makefile.ow -- Build ViewBmp with OpenWatcom C for OS/2
+#
+# Usage: wmake -f Makefile.ow
+#
+# Requires OpenWatcom 1.9 or 2.0: wcc386, wlink, wrc
+
+CC      = wcc386
+CFLAGS  = -bt=os2 -mf -3 -zq -Isrc
+
+SRC     = src
+OUT     = bin-ow
+
+BLDLEVEL = @#OS2World:1.01#@##1## 24 Jul 2026 00:00:00     ARCAOS-507::::::v1.01@@Bitmap Viewer - OS/2 PM sample for viewing and analyzing bitmap files.
+
+OBJS    = $(OUT)\appdefs.obj &
+          $(OUT)\bmpwnd.obj  &
+          $(OUT)\effects.obj &
+          $(OUT)\getbmp.obj  &
+          $(OUT)\opendlg.obj &
+          $(OUT)\support.obj &
+          $(OUT)\viewbmp.obj &
+          $(OUT)\viewdlg.obj
+
+TARGET  = $(OUT)\ViewBmp.exe
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS) $(OUT)\viewbmp.res
+	wlink &
+	    name $(TARGET) &
+	    system os2v2_pm &
+	    option modname=ViewBmp &
+	    option stack=32768 &
+	    option description '$(BLDLEVEL)' &
+	    file $(OUT)\appdefs.obj &
+	    file $(OUT)\bmpwnd.obj  &
+	    file $(OUT)\effects.obj &
+	    file $(OUT)\getbmp.obj  &
+	    file $(OUT)\opendlg.obj &
+	    file $(OUT)\support.obj &
+	    file $(OUT)\viewbmp.obj &
+	    file $(OUT)\viewdlg.obj &
+	    library pm
+	wrc $(OUT)\viewbmp.res $(TARGET)
+
+$(OUT)\viewbmp.res: $(SRC)\viewbmp.rc $(SRC)\viewbmp.h $(SRC)\bmpview.ico
+	wrc -r -I$(SRC) -fo=$(OUT)\viewbmp.res $(SRC)\viewbmp.rc
+
+$(OUT)\appdefs.obj: $(SRC)\appdefs.c $(SRC)\appdefs.h $(SRC)\viewbmp.h $(SRC)\winbmp.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\appdefs.obj $(SRC)\appdefs.c
+
+$(OUT)\bmpwnd.obj: $(SRC)\bmpwnd.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\bmpwnd.obj $(SRC)\bmpwnd.c
+
+$(OUT)\effects.obj: $(SRC)\effects.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\effects.obj $(SRC)\effects.c
+
+$(OUT)\getbmp.obj: $(SRC)\getbmp.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\getbmp.obj $(SRC)\getbmp.c
+
+$(OUT)\opendlg.obj: $(SRC)\opendlg.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\opendlg.obj $(SRC)\opendlg.c
+
+$(OUT)\support.obj: $(SRC)\support.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\support.obj $(SRC)\support.c
+
+$(OUT)\viewbmp.obj: $(SRC)\viewbmp.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\viewbmp.obj $(SRC)\viewbmp.c
+
+$(OUT)\viewdlg.obj: $(SRC)\viewdlg.c $(SRC)\appdefs.h
+	$(CC) $(CFLAGS) -fo=$(OUT)\viewdlg.obj $(SRC)\viewdlg.c
+
+clean: .symbolic
+	del $(OUT)\*.obj $(OUT)\*.res $(OUT)\*.map $(OUT)\*.exe 2>nul
